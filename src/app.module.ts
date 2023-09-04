@@ -6,9 +6,10 @@ import { AdminModule } from './modules/admin/admin.module';
 import { OrderModule } from './modules/order/order.module';
 import { FoodModule } from './modules/food/food.module';
 import { TableModule } from './modules/table/table.module';
+import { FoodsOrderModule } from './modules/foods-order/foods-order.module';
 
 @Module({
-  imports: [AuthModule, AdminModule, OrderModule, FoodModule, TableModule],
+  imports: [AuthModule, AdminModule, OrderModule, FoodModule, TableModule, FoodsOrderModule],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

@@ -10,6 +10,7 @@ import {
 import { FoodService } from './food.service';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
+import { IsPublic } from '../auth/decorators/is-public.decorators';
 
 @Controller('food')
 export class FoodController {
@@ -20,6 +21,7 @@ export class FoodController {
     return this.foodService.create(createFoodDto);
   }
 
+  @IsPublic()
   @Get()
   findAll() {
     return this.foodService.findAll();

@@ -41,9 +41,10 @@ model Food {
 }
 
 model FoodsOrder {
-  id      String @id @unique @default(uuid())
-  foodId  String
-  orderId String
+  id       String @id @unique @default(uuid())
+  foodId   String
+  orderId  String
+  quantity Int
 
   Order Order @relation(fields: [orderId], references: [id])
   Food  Food  @relation(fields: [foodId], references: [id])
