@@ -27,7 +27,7 @@ CREATE TABLE `Food` (
     `id` VARCHAR(191) NOT NULL,
     `number` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `Price` DOUBLE NOT NULL,
+    `price` DOUBLE NOT NULL,
 
     UNIQUE INDEX `Food_id_key`(`id`),
     UNIQUE INDEX `Food_number_key`(`number`),

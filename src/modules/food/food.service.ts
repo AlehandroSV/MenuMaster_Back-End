@@ -1,26 +1,64 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
+import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class FoodService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createFoodDto: CreateFoodDto) {
-    return 'This action adds a new food';
+    try {
+      return this.prisma.food.create({ data: createFoodDto });
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível criar o Item' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   findAll() {
-    return `This action returns all food`;
+    try {
+      return this.prisma.food.findMany();
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível carregar todos os Itens' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} food`;
+  findOne(id: string) {
+    try {
+      return this.prisma.food.findUniqueOrThrow({ where: { id } });
+    } catch (error) {
+      throw new HttpException(
+        { message: `Não encontramos o item com id: ${id}` },
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
-  update(id: number, updateFoodDto: UpdateFoodDto) {
-    return `This action updates a #${id} food`;
+  update(id: string, updateFoodDto: UpdateFoodDto) {
+    try {
+      return this.prisma.food.update({ where: { id }, data: updateFoodDto });
+    } catch (error) {
+      throw new HttpException(
+        { message: `Não foi possível excluir a entidade com o id: ${id}` },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} food`;
+  remove(id: string) {
+    try {
+      return this.prisma.food.delete({ where: { id } });
+    } catch (error) {
+      throw new HttpException(
+        { message: `Não foi possível excluir a entidade com o id: ${id}` },
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 }

@@ -30,7 +30,7 @@ model Food {
   id        String      @id @unique @default(uuid())
   number    Int         @unique @default(autoincrement())
   name      String
-  Price     Float
+  price     Float
   FoodOrder FoodOrder[]
 }
 
