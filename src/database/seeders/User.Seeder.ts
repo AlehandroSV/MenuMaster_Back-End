@@ -1,4 +1,4 @@
-import { PrismaService } from 'src/database/prisma.service';
+import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcrypt';
 
 export class UserSeeder {
@@ -12,11 +12,13 @@ export class UserSeeder {
         name: 'Admin',
         email: 'admin@menumaster.com',
         password: password,
+        isAdminPrincipal: true,
       },
       {
         name: 'Manager',
         email: 'manager@menumaster.com',
         password: password,
+        isAdminPrincipal: true,
       },
     ];
 

@@ -3,9 +3,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { AdminModule } from './modules/admin/admin.module';
+import { OrderModule } from './modules/order/order.module';
+import { FoodModule } from './modules/food/food.module';
 
 @Module({
-  imports: [AuthModule, AdminModule],
+  imports: [AuthModule, AdminModule, OrderModule, FoodModule],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })

@@ -1,5 +1,5 @@
-import { PrismaService } from '../src/database/prisma.service';
-import { UserSeeder } from '../src/seeders/User.Seeder';
+import { PrismaService } from './prisma.service';
+import { UserSeeder } from './seeders/User.Seeder';
 
 async function main() {
   const prisma = new PrismaService();
