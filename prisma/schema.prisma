@@ -22,33 +22,43 @@ model Order {
   id       String @id @unique @default(uuid())
   number   Int    @unique @default(autoincrement())
   userName String
+  tableId  String
+  amount   Float
+  status   Status @default(WAITING)
 
-  FoodOrder FoodOrder[]
+  FoodsOrder FoodsOrder[]
+
+  Table Table @relation(fields: [tableId], references: [id])
 }
 
 model Food {
-  id        String      @id @unique @default(uuid())
-  number    Int         @unique @default(autoincrement())
-  name      String
-  price     Float
-  FoodOrder FoodOrder[]
+  id     String @id @unique @default(uuid())
+  number Int    @unique @default(autoincrement())
+  name   String
+  price  Float
+
+  FoodsOrder FoodsOrder[]
 }
 
-model FoodOrder {
-  id       String @id @unique @default(uuid())
-  quantity Int
-  orderId  String
-  foodId   String
+model FoodsOrder {
+  id      String @id @unique @default(uuid())
+  foodId  String
+  orderId String
 
-  table   Table  @relation(fields: [tableId], references: [id])
-  food    Food   @relation(fields: [foodId], references: [id])
-  order   Order  @relation(fields: [orderId], references: [id])
-  tableId String
+  Order Order @relation(fields: [orderId], references: [id])
+  Food  Food  @relation(fields: [foodId], references: [id])
 }
 
 model Table {
-  id        String      @id @unique @default(uuid())
-  number    Int
-  name      String
-  FoodOrder FoodOrder[]
+  id     String @id @unique @default(uuid())
+  number Int
+  name   String
+
+  Order Order[]
+}
+
+enum Status {
+  CONCLUDED
+  PROGRESS
+  WAITING
 }
