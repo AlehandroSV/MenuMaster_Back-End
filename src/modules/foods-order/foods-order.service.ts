@@ -6,7 +6,7 @@ import { CreateFoodsOrderDto } from './dto/create-foods-order.dto';
 export class FoodsOrderService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createFoodsOrderDto: CreateFoodsOrderDto) {
-    return this.prisma.foodsOrder.create({ data: createFoodsOrderDto });
+  async create(createFoodsOrderDto: CreateFoodsOrderDto) {
+    return await this.prisma.foodsOrder.create({ data: createFoodsOrderDto });
   }
 }

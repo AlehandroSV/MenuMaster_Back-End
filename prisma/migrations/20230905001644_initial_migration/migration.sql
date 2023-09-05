@@ -42,6 +42,7 @@ CREATE TABLE `FoodsOrder` (
     `id` VARCHAR(191) NOT NULL,
     `foodId` VARCHAR(191) NOT NULL,
     `orderId` VARCHAR(191) NOT NULL,
+    `quantity` INTEGER NOT NULL,
 
     UNIQUE INDEX `FoodsOrder_id_key`(`id`),
     PRIMARY KEY (`id`)

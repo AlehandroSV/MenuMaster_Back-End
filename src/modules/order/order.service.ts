@@ -13,13 +13,21 @@ export class OrderService {
 
   async create(createOrderDto: CreateOrderDto) {
     try {
-      const order = await this.prisma.order.create({ data: createOrderDto });
+      const order = await this.prisma.order.create({
+        data: {
+          userName: createOrderDto.userName,
+          amount: createOrderDto.amount,
+          status: createOrderDto.status,
+          tableId: createOrderDto.tableId,
+        },
+      });
 
-      createOrderDto.foods.forEach((item) => {
-        this.foodsOrder.create({
+      console.log('Teste');
+      createOrderDto.foods.forEach(async (item) => {
+        await this.foodsOrder.create({
           foodId: item.id,
           orderId: order.id,
-          quantity: createOrderDto.quantity,
+          quantity: item.quantity,
         });
       });
 
