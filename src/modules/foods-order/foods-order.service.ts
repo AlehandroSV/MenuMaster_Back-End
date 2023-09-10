@@ -7,6 +7,10 @@ export class FoodsOrderService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createFoodsOrderDto: CreateFoodsOrderDto) {
-    return await this.prisma.foodsOrder.create({ data: createFoodsOrderDto });
+    const foodsOrderCreate = await this.prisma.foodsOrder.create({
+      data: createFoodsOrderDto,
+    });
+
+    return foodsOrderCreate;
   }
 }

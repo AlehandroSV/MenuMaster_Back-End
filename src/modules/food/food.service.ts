@@ -7,9 +7,11 @@ import { PrismaService } from 'src/database/prisma.service';
 export class FoodService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createFoodDto: CreateFoodDto) {
+  async create(createFoodDto: CreateFoodDto) {
     try {
-      return this.prisma.food.create({ data: createFoodDto });
+      const foodCreate = await this.prisma.food.create({ data: createFoodDto });
+
+      return foodCreate;
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível criar o Item' },
@@ -18,9 +20,11 @@ export class FoodService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.prisma.food.findMany();
+      const foods = await this.prisma.food.findMany();
+
+      return foods;
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível carregar todos os Itens' },
@@ -29,9 +33,11 @@ export class FoodService {
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     try {
-      return this.prisma.food.findUniqueOrThrow({ where: { id } });
+      const food = await this.prisma.food.findUniqueOrThrow({ where: { id } });
+
+      return food;
     } catch (error) {
       throw new HttpException(
         { message: `Não encontramos o item com id: ${id}` },
@@ -40,9 +46,14 @@ export class FoodService {
     }
   }
 
-  update(id: string, updateFoodDto: UpdateFoodDto) {
+  async update(id: string, updateFoodDto: UpdateFoodDto) {
     try {
-      return this.prisma.food.update({ where: { id }, data: updateFoodDto });
+      const foodUpdate = await this.prisma.food.update({
+        where: { id },
+        data: { ...updateFoodDto, updated_at: new Date() },
+      });
+
+      return foodUpdate;
     } catch (error) {
       throw new HttpException(
         { message: `Não foi possível excluir a entidade com o id: ${id}` },
@@ -51,9 +62,11 @@ export class FoodService {
     }
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     try {
-      return this.prisma.food.delete({ where: { id } });
+      const foodRemove = await this.prisma.food.delete({ where: { id } });
+
+      return foodRemove;
     } catch (error) {
       throw new HttpException(
         { message: `Não foi possível excluir a entidade com o id: ${id}` },

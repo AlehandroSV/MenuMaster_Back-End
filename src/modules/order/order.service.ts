@@ -20,9 +20,9 @@ export class OrderService {
           status: createOrderDto.status,
           tableId: createOrderDto.tableId,
         },
+        include: { FoodsOrder: { include: { Food: {} } } },
       });
 
-      console.log('Teste');
       createOrderDto.foods.forEach(async (item) => {
         await this.foodsOrder.create({
           foodId: item.id,
@@ -31,12 +31,7 @@ export class OrderService {
         });
       });
 
-      const getOrder = await this.prisma.order.findUnique({
-        where: { id: order.id },
-        include: { FoodsOrder: { include: { Food: {} } } },
-      });
-
-      return getOrder;
+      return order;
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível criar o Pedido' },
@@ -45,9 +40,42 @@ export class OrderService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.prisma.order.findMany();
+      const orders = await this.prisma.order.findMany();
+
+      return orders;
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível criar a Ordem' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async findOne(id: string) {
+    try {
+      const order = await this.prisma.order.findUniqueOrThrow({
+        where: { id },
+      });
+
+      return order;
+    } catch (error) {
+      throw new HttpException(
+        { message: 'Não foi possível criar o Ordem' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
+    try {
+      const orderUpdate = await this.prisma.order.update({
+        where: { id },
+        data: updateOrderDto,
+      });
+
+      return orderUpdate;
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível criar o Item' },
@@ -56,31 +84,11 @@ export class OrderService {
     }
   }
 
-  findOne(id: string) {
+  async remove(id: string) {
     try {
-      return this.prisma.order.findUniqueOrThrow({ where: { id } });
-    } catch (error) {
-      throw new HttpException(
-        { message: 'Não foi possível criar o Item' },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
+      const orderDelete = await this.prisma.order.delete({ where: { id } });
 
-  update(id: string, updateOrderDto: UpdateOrderDto) {
-    try {
-      return this.prisma.order.update({ where: { id }, data: updateOrderDto });
-    } catch (error) {
-      throw new HttpException(
-        { message: 'Não foi possível criar o Item' },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-  }
-
-  remove(id: string) {
-    try {
-      return this.prisma.order.delete({ where: { id } });
+      return orderDelete;
     } catch (error) {
       throw new HttpException(
         { message: 'Não foi possível criar o Item' },
